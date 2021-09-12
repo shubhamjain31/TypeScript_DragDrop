@@ -1,0 +1,34 @@
+{
+  "name": "typescript_dragdrop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "lite-server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shubhamjain31/TypeScript_DragDrop.git"
+  },
+  "keywords": [
+    "drag",
+    "and",
+    "drop"
+  ],
+  "author": "Shubham Jain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shubhamjain31/TypeScript_DragDrop/issues"
+  },
+  "homepage": "https://github.com/shubhamjain31/TypeScript_DragDrop#readme",
+  "devDependencies": {
+    "@types/express": "^4.16.1",
+    "lite-server": "^2.6.1",
+    "tslint": "^5.12.1",
+    "typescript": "^3.3.3"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}

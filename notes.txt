@@ -1,0 +1,2 @@
+## command to start a server
+	npm run start
