@@ -165,6 +165,7 @@ class ProjectInput {
       const [title, description, people] = userInput;
       this.clearInput();
 
+      // project added in below list
       projectState.addProject(title, description, people);
     }
 
@@ -219,6 +220,8 @@ class ProjectList implements DragTarget {
     projectState.addListener((projects: Project[]) => {
       
       const relavantProjects = projects.filter((project) => {
+
+        // check if status is active then data will append in active project list otherwise fininsed projects list
         if (this.type === 'active') {
           return project.status === ProjectStatus.Active;
         }
@@ -251,10 +254,7 @@ class ProjectList implements DragTarget {
 
   @autobind
   dropHandler(event: DragEvent): void {
-    if (
-      event.dataTransfer &&
-      event.dataTransfer.types[0] === 'text/plain'
-    ) {
+    if(event.dataTransfer && event.dataTransfer.types[0] === 'text/plain') {
       let projectId = event.dataTransfer.getData('text/plain');
       projectState.moveProject(
         projectId,
@@ -274,6 +274,7 @@ class ProjectList implements DragTarget {
   }
 }
 
+// all data elements of single object will be appended after creating an object
 class ProjectItem implements Draggable {
   liElement: HTMLLIElement;
   constructor(private project: Project, private element: HTMLUListElement) {
@@ -283,6 +284,7 @@ class ProjectItem implements Draggable {
     this.configure();
   }
 
+  // event listener for drag and drop(i.e., move)
   private configure() {
     this.liElement.addEventListener('dragstart', this.dragStartHandler);
     this.liElement.addEventListener('dragend', this.dragEndHandler);
@@ -299,6 +301,7 @@ class ProjectItem implements Draggable {
     console.log('dragend');
   }
 
+  // check condition for single and many persons
   get person() {
     if (this.project.people === 1) {
       return '1 Person';

@@ -1,2 +1,14 @@
+## For setup of this project:
+	https://www.digitalocean.com/community/tutorials/setting-up-a-node-project-with-typescript
+
+##  lite-server command for download
+	npm install lite-server --save-dev
+
 ## command to start a server
 	npm run start
+
+
+
+## change in package.json file for setting up your project
+
+## Also change in tsconfig.json file
