@@ -22,42 +22,34 @@ interface DragTarget {
   dropHandler(event: DragEvent): void;
 }
 
+// function to validate data of all input fields
 function validate(validatableInput: Validatable): boolean {
   let isValid = true;
 
   if (validatableInput.required) {
-    isValid =
-      isValid && validatableInput.value.toString().trim().length !== 0;
+    isValid = isValid && validatableInput.value.toString().trim().length !== 0;
   }
 
   if (
-    validatableInput.minLength != null &&
-    typeof validatableInput.value === 'string'
+    validatableInput.minLength != null && typeof validatableInput.value === 'string'
   ) {
-    isValid =
-      isValid &&
-      validatableInput.value.length >= validatableInput.minLength;
+    isValid = isValid && validatableInput.value.length >= validatableInput.minLength;
   }
 
   if (
-    validatableInput.maxLength != null &&
-    typeof validatableInput.value === 'string'
+    validatableInput.maxLength != null && typeof validatableInput.value === 'string'
   ) {
-    isValid =
-      isValid &&
-      validatableInput.value.length <= validatableInput.maxLength;
+    isValid = isValid && validatableInput.value.length <= validatableInput.maxLength;
   }
 
   if (
-    validatableInput.min != null &&
-    typeof validatableInput.value === 'number'
+    validatableInput.min != null && typeof validatableInput.value === 'number'
   ) {
     isValid = isValid && validatableInput.value >= validatableInput.min;
   }
 
   if (
-    validatableInput.max != null &&
-    typeof validatableInput.value === 'number'
+    validatableInput.max != null && typeof validatableInput.value === 'number'
   ) {
     isValid = isValid && validatableInput.value <= validatableInput.max;
   }
@@ -65,6 +57,7 @@ function validate(validatableInput: Validatable): boolean {
   return isValid;
 }
 
+// define variable with datatype and conditions like ?(i.e, min?: number or min: number or undefined)
 interface Validatable {
   value: string | number;
   required?: true;
@@ -149,12 +142,10 @@ class ProjectInput {
   peopleEl:       HTMLInputElement;
   
   constructor() {
-    this.FormEl = document.querySelector('form') as HTMLFormElement;
-    this.titleEl = document.getElementById('title') as HTMLInputElement;
-    this.peopleEl = document.getElementById('people') as HTMLInputElement;
-    this.descriptionEl = document.getElementById(
-      'description'
-    ) as HTMLInputElement;
+    this.FormEl         = document.querySelector('form') as HTMLFormElement;
+    this.titleEl        = document.getElementById('title') as HTMLInputElement;
+    this.peopleEl       = document.getElementById('people') as HTMLInputElement;
+    this.descriptionEl  = document.getElementById('description') as HTMLInputElement;
 
     this.configure();
   }
@@ -167,27 +158,31 @@ class ProjectInput {
   private submitHandler(event: Event) {
     event.preventDefault();
 
+    // store all data in userInput variable
     const userInput = this.gatherUserInput();
 
     if (Array.isArray(userInput)) {
       const [title, description, people] = userInput;
       this.clearInput();
+
       projectState.addProject(title, description, people);
     }
 
     //console.log(title, description, people);
   }
 
+  // clear input fields after form submit
   private clearInput() {
     this.titleEl.value = '';
     this.descriptionEl.value = '';
     this.peopleEl.value = '';
   }
 
+  // get input fields data in this function
   private gatherUserInput(): [string, string, number] | void {
-    const title = this.titleEl.value;
-    const description = this.descriptionEl.value;
-    const people = +this.peopleEl.value;
+    const title         = this.titleEl.value;
+    const description   = this.descriptionEl.value;
+    const people        = +this.peopleEl.value;
 
     const titleValidatable: Validatable = {
       value: title,
@@ -208,11 +203,7 @@ class ProjectInput {
       max: 10,
     };
 
-    if (
-      !validate(titleValidatable) ||
-      !validate(descriptionValidatable) ||
-      !validate(peopleValidatable)
-    ) {
+    if (!validate(titleValidatable) || !validate(descriptionValidatable) || !validate(peopleValidatable)) {
       alert('Input values are not valid');
       return;
     }
@@ -223,20 +214,21 @@ class ProjectInput {
 class ProjectList implements DragTarget {
   assignedProjects: Project[] = [];
   ulElement: HTMLUListElement;
-  constructor(private type: string) {
-    this.ulElement = document.getElementById(
-      `${this.type}-projects-list`
-    ) as HTMLUListElement;
+  constructor(private type: string) {this.ulElement = document.getElementById(`${this.type}-projects-list`) as HTMLUListElement;
+    
     projectState.addListener((projects: Project[]) => {
+      
       const relavantProjects = projects.filter((project) => {
         if (this.type === 'active') {
           return project.status === ProjectStatus.Active;
         }
         return project.status === ProjectStatus.Finished;
       });
+      
       this.assignedProjects = relavantProjects;
       this.renderProjects();
     });
+    
     this.configure();
   }
 
@@ -323,6 +315,7 @@ class ProjectItem implements Draggable {
   }
 }
 
-const projectInput = new ProjectInput();
-const activeprojectList = new ProjectList('active');
-const finishedprojectList = new ProjectList('finished');
+// create an object for form save without page refresh
+const projectInput          = new ProjectInput();
+const activeprojectList     = new ProjectList('active');
+const finishedprojectList   = new ProjectList('finished');
