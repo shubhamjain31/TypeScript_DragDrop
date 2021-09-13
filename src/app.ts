@@ -194,7 +194,7 @@ class ProjectInput {
       value: description,
       required: true,
       minLength: 4,
-      maxLength: 10,
+      maxLength: 80,
     };
 
     const peopleValidatable: Validatable = {
